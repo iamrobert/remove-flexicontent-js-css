@@ -74,9 +74,11 @@ class PlgSystemJsCssControl extends JPlugin
                 {
                     $this->exclude_js_files[] = 'components/com_flexicontent/assets/js/tmpl-common.js';
 					$this->exclude_js_files[] = 'components/com_flexicontent/assets/js/jquery-easing.js';
+					$this->exclude_js_files[] = 'media/system/js/mootools-core.js';
+ 					$this->exclude_js_files[] = 'media/system/js/core.js';
+  					$this->exclude_js_files[] = 'media/system/js/mootools-more.js';
+					//Probably Need to remove css
 					$this->exclude_css_files[] = 'components/com_flexicontent/templates/articles/css/item.css';
-					
-
                 }
                 if(!empty($this->exclude_js_files))
                 {
@@ -155,14 +157,10 @@ class PlgSystemJsCssControl extends JPlugin
                     }
                 }
 
-//iamrobert FLEXIcontent
+
      		if(!empty($remove_flexi))
                 {
-                    preg_match('@
-                        <head>
-.*(<script type="text/javascript">.*var _FC_GET = .+\s.*</script>).*
-</head>
-@isU', $body, $match_flexi);
+                    preg_match('@<head>.*(<script type="text/javascript">.*var _FC_GET = .+\s.*</script>).*</head>@isU', $body, $match_flexi);
 					
 					
 					
@@ -178,11 +176,7 @@ class PlgSystemJsCssControl extends JPlugin
 			
 				if(!empty($remove_flexi))
                 {
-                    preg_match('@
-                        <head>
-.*(<script type="text/javascript">.\s*\(function\(\) {\n.*Joomla.JText.load.+\s.*</script>).*
-</head>
-@isU', $body, $match_flexi);
+ preg_match('@<head>.*(<script type="text/javascript">.\s*\(function\(\) {\n.*Joomla.JText.load.+\s.*</script>).*</head>@isU', $body, $match_flexi);
 					
 					
 					
