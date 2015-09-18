@@ -160,7 +160,25 @@ class PlgSystemJsCssControl extends JPlugin
 
      		if(!empty($remove_flexi))
                 {
-                    preg_match('@<head>.*(<script type="text/javascript">.*var _FC_GET = .+\s.*</script>).*</head>@isU', $body, $match_flexi);
+                    preg_match('@<head>.*(<script type="text/javascript">.*.var _FC_GET.*</script>).*</head>@isU', $body, $match_flexi);
+				
+					
+                    if(!empty($match_flexi[1]))
+                    {
+                        $this->removeInlineJavaScript($body, $match_flexi[1]);
+						
+                    }
+					
+					
+					
+                }
+			
+			
+			if(!empty($remove_flexi))
+                {
+                    preg_match('@<head>.*(<script type="text/javascript">.\s*\(function\(\){Joomla.JText.*</script>).*</head>@isU', $body, $match_flexi);
+					
+					
 					
 					
 					
@@ -173,7 +191,7 @@ class PlgSystemJsCssControl extends JPlugin
 					
 					
                 }
-			
+				
 				if(!empty($remove_flexi))
                 {
  preg_match('@<head>.*(<script type="text/javascript">.\s*\(function\(\) {\n.*Joomla.JText.load.+\s.*</script>).*</head>@isU', $body, $match_flexi);
@@ -357,6 +375,7 @@ class PlgSystemJsCssControl extends JPlugin
 
         $debug_array['option'] = $this->request->getWord('option');
         $debug_array['view'] = $this->request->getWord('view');
+
         $debug_array['task'] = $this->request->getCmd('task');
         $debug_array['func'] = $this->request->getWord('func');
         $debug_array['layout'] = $this->request->getWord('layout');
