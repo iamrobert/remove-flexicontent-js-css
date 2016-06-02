@@ -7,5 +7,6 @@ FLEXIcontent CSS/JS - that I didn't ask to be put into my /template/ index.php f
 
 1. Install jcc-js-cee control
 2. Overwrite the two files in plugins/system/jscsscontrol/
-2. Enable/Disable FLEXIcontent in the system plugin
+3. Enable/Disable FLEXIcontent in the system plugin
+4. Remove RSFORM in the system plugin
 
