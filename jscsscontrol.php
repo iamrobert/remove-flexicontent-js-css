@@ -275,7 +275,7 @@ $flexi_pattern2 = '@<head>.*(<script type="text/javascript">.\s*\(function\(\){J
 $flexi_pattern3 = '@<head>.*(<script type="text/javascript">.*var fc_validateOnSubmitForm.*</script>).*</head>@isU';
 				$this->removeInlineJavaScript($body, $flexi_pattern3);
 
-					//REMOVE var fc_validateOnSubmitForm
+					//REMOVE FLEXI_APPLYING_FILTERING
 $flexi_pattern5 = '@<head>.*(<script type="application/json" class="joomla-script-options new">.*FLEXI_APPLYING_FILTERING.*</script>).*</head>@isU';
 				$this->removeInlineJavaScript($body, $flexi_pattern5);
 				
