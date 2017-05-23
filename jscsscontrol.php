@@ -3,7 +3,7 @@
  * @Copyright
  * @package     JCC - JS CSS Control for Joomla! 3.x
  * @author      Viktor Vogel <admin@kubik-rubik.de>
- * @version     3.2.0 - 2016-02-05
+ * @version     3.2.1 - 2017-04-18
  * @link        https://joomla-extensions.kubik-rubik.de/jcc-js-css-control
  *
  * @license     GNU/GPL
@@ -32,11 +32,11 @@ class PlgSystemJsCssControl extends JPlugin
 	protected $exclude_js_files = array();
 	protected $exclude_css_files = array();
 	protected $excluded_files = array();
+	protected $autoloadLanguage = true;
 
 	function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		$this->loadLanguage('plg_system_jscsscontrol', JPATH_ADMINISTRATOR);
 
 		if($this->params->get('execute_admin', 0) == false AND JFactory::getApplication()->isAdmin())
 		{
@@ -72,13 +72,13 @@ class PlgSystemJsCssControl extends JPlugin
 				$this->exclude_js_files[] = 'media/system/js/caption.js';
 			}
 			
-			// Remove FLEXIcontent if corresponding option selected
+						// Remove FLEXIcontent if corresponding option selected
 			if(!empty($remove_flexi))
 			{
 				$this->exclude_js_files[] = 'components/com_flexicontent/assets/js/tmpl-common.js';
 				$this->exclude_js_files[] = 'components/com_flexicontent/assets/js/jquery-easing.js';
 			}
-
+			
 			if(!empty($this->exclude_js_files))
 			{
 				$loaded_files_js = $document->_scripts;
@@ -90,9 +90,8 @@ class PlgSystemJsCssControl extends JPlugin
 			{
 				$this->exclude_css_files = $this->getFilesToExclude($css);
 			}
-
-
-			// Remove FLEXIcontent if corresponding option selected
+			
+				// Remove FLEXIcontent if corresponding option selected
 			if(!empty($remove_flexi))
 			{
 				$this->exclude_css_files[] = 'components/com_flexicontent/librairies/jquery/css/ui-lightness/jquery-ui-1.9.2.css';
@@ -102,17 +101,15 @@ class PlgSystemJsCssControl extends JPlugin
 				//CHOSEN CSS
 				$this->exclude_css_files[] = 'media/jui/css/chosen.css';
 			}
-		
-		
-
+			
 			if(!empty($remove_rsform))
 			{
 				$this->exclude_css_files[] = 'components/com_rsform/assets/calendar/calendar.css';
 				$this->exclude_css_files[] = 'components/com_rsform/assets/css/front.css';
-				
-				
+				$this->exclude_css_files[] = 'media/com_rsform/css/front.css';
+				$this->exclude_css_files[] = 'media/com_rsform/css/frameworks/foundation/foundation-errors.css';
 			}
-				
+			
 			if(!empty($this->exclude_css_files))
 			{
 				$loaded_files_css = $document->_styleSheets;
@@ -258,35 +255,13 @@ class PlgSystemJsCssControl extends JPlugin
 				$this->excludeFilesOnAfterRender($body, $this->exclude_css_files, $css_pattern);
 			}
 
-			if(!empty($remove_jcaption))
-			{
-				$jcaption_pattern = '@<head>.*<script type="text/javascript">.*(jQuery\(window\)\.on\(\'load\',\s*function\(\)\s*{\s*\n?\s*new JCaption\(["|\']img.caption["|\']\);.*}\);).*</script>.*</head>@isU';
-				$this->removeInlineJavaScript($body, $jcaption_pattern);
-			}
-
-			
-
-//REMOVE FC GET
-
-/* 
- preg_match('@<head>.*(<script type="text/javascript">.*.var _FC_GET.*</script>).*</head>@isU', $body, $match_flexi);
-				
-					
-                    if(!empty($match_flexi[1]))
-                    {
-                        $this->removeInlineJavaScript($body, $match_flexi[1]);
-						
-                    }
-*/
-
-			
-			if(!empty($remove_flexi))
+						if(!empty($remove_flexi))
 			{
 				$flexi_pattern = '@<head>.*<script type="text/javascript">.*(var _FC_GET.*;).*</script>.*</head>@isU';
 				$this->removeInlineJavaScript($body, $flexi_pattern);
 				
-				$flexi_j2store = '@<head>.*<script type="text/javascript">.*(view":"carts"};).*</script>.*</head>@isU';
-				$this->removeInlineJavaScript($body, $flexi_j2store);
+		//		$flexi_j2store = '@<head>.*<script type="text/javascript">.*(view":"carts"};).*</script>.*</head>@isU';
+		//		$this->removeInlineJavaScript($body, $flexi_j2store);
 				
 				//REMOVE JTEXT LOAD
 $flexi_pattern1 = '@<head>.*(<script type="text/javascript">.\s*\(function\(\) {\n.*Joomla.JText.load.+\s.*</script>).*</head>@isU';
@@ -299,18 +274,29 @@ $flexi_pattern2 = '@<head>.*(<script type="text/javascript">.\s*\(function\(\){J
 					//REMOVE var fc_validateOnSubmitForm
 $flexi_pattern3 = '@<head>.*(<script type="text/javascript">.*var fc_validateOnSubmitForm.*</script>).*</head>@isU';
 				$this->removeInlineJavaScript($body, $flexi_pattern3);
-						
-			
+
+					//REMOVE var fc_validateOnSubmitForm
+$flexi_pattern5 = '@<head>.*(<script type="application/json" class="joomla-script-options new">.*FLEXI_APPLYING_FILTERING.*</script>).*</head>@isU';
+				$this->removeInlineJavaScript($body, $flexi_pattern5);
+				
+$flexi_pattern4 = '@<head>css.*</head>@isU';
+				$this->removeInlineJavaScript($body, $flexi_pattern4);					
+	
+
 					//REMOVE COM_USER CHOSEN
 $com_user_chosen = '@<head>.*(jQuery\(document\).ready\(function \(\){\n.*jQuery\(\'select\'\).chosen.*\n.*}\);).*</head>@isU';	
 $this->removeInlineJavaScript($body, $com_user_chosen);
 			}
 			
+			if(!empty($remove_jcaption))
+			{
+				$jcaption_pattern = '@<head>.*<script[^>]*>.*(jQuery\(window\)\.on\(\'load\',\s*function\(\)\s*{\s*\n?\s*new JCaption\(["|\']img.caption["|\']\);.*}\);).*</script>.*</head>@isU';
+				$this->removeInlineJavaScript($body, $jcaption_pattern);
+			}
 
-			
 			if(!empty($remove_tooltip))
 			{
-				$tooltip_pattern = '@<head>.*<script type="text/javascript">.*(jQuery\(document\)\.ready\(function\(\){\s*\n?\s*jQuery\(\'\.hasTooltip\'\)\.tooltip.*}\);.*}\);).*</script>.*</head>@isU';
+				$tooltip_pattern = '@<head>.*<script[^>]*>.*(jQuery\(function\(\$\){\s*\$\("\.hasTooltip"\)\.tooltip\({.*}\)(\.on\([^\)]*\))?;\s*}\);).*</script>.*</head>@isU';
 				$this->removeInlineJavaScript($body, $tooltip_pattern);
 			}
 
@@ -328,7 +314,7 @@ $this->removeInlineJavaScript($body, $com_user_chosen);
 
 				$debug_js_files = array_unique(array_merge($this->debug_js, $matches_js[1]));
 				$debug_css_files = array_unique(array_merge($this->debug_css, $matches_css[1]));
-				$debug_output_list = JTEXT::_('PLG_JSCSSCONTROL_DEBUGOUTPUT_NOFILES');
+				$debug_output_list = JText::_('PLG_JSCSSCONTROL_DEBUGOUTPUT_NOFILES');
 
 				if(!empty($debug_js_files) OR !empty($debug_css_files))
 				{
@@ -414,13 +400,13 @@ $this->removeInlineJavaScript($body, $com_user_chosen);
 			$debug_file_path = $debug_file;
 
 			// Check and adjust the path to the file to get the correct size
-			if(strpos($debug_file, JURI::base()) !== false)
+			if(strpos($debug_file, JUri::base()) !== false)
 			{
-				$debug_file_path = str_replace(JURI::base(), '', $debug_file);
+				$debug_file_path = str_replace(JUri::base(), '', $debug_file);
 			}
-			elseif(strpos($debug_file, JURI::base(true)) !== false)
+			elseif(strpos($debug_file, JUri::base(true)) !== false)
 			{
-				$debug_file_path = str_replace(JURI::base(true), '', $debug_file);
+				$debug_file_path = str_replace(JUri::base(true), '', $debug_file);
 			}
 
 			if(substr($debug_file_path, 0, 1) != '/' AND substr($debug_file_path, 0, 4) != 'http')
@@ -455,7 +441,7 @@ $this->removeInlineJavaScript($body, $com_user_chosen);
 			}
 		}
 
-		return '<p class="jcc-summary">'.JTEXT::sprintf('PLG_JSCSSCONTROL_DEBUGOUTPUT_SUMMARY', strtoupper($type), count($debug_output_array), $this->formatSizeKb($size_total), '<span class="jcc-excluded">'.$this->formatSizeKb($size_excluded).'</span>', '<span class="jcc-loaded">'.$this->formatSizeKb($size_loaded).'</span>').'</p><pre><code>'.implode('<br />', $debug_output_array).'</code></pre>';
+		return '<p class="jcc-summary">'.JText::sprintf('PLG_JSCSSCONTROL_DEBUGOUTPUT_SUMMARY', strtoupper($type), count($debug_output_array), $this->formatSizeKb($size_total), '<span class="jcc-excluded">'.$this->formatSizeKb($size_excluded).'</span>', '<span class="jcc-loaded">'.$this->formatSizeKb($size_loaded).'</span>').'</p><pre><code>'.implode('<br />', $debug_output_array).'</code></pre>';
 	}
 
 	/**
