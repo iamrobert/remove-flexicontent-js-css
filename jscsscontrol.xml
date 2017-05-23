@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" version="3.0" group="system" method="upgrade">
     <name>PLG_JSCSSCONTROL</name>
-    <version>3.2.0</version>
-    <creationDate>2016-02-05</creationDate>
+    <version>3.2.1</version>
+    <creationDate>2017-04-18</creationDate>
     <license>http://www.gnu.org/licenses/gpl</license>
-    <copyright>Copyright 2016 Viktor Vogel. All rights reserved.</copyright>
+    <copyright>Copyright 2017 Viktor Vogel. All rights reserved.</copyright>
     <author>Viktor Vogel</author>
     <authoremail>admin@kubik-rubik.de</authoremail>
     <authorUrl>https://joomla-extensions.kubik-rubik.de/</authorUrl>
@@ -55,7 +55,7 @@
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
-				<field name="remove_flexi" type="list" default="1" label="Remove FLEXIcontent" description="Remove FLEXIcontent Plugins">
+                <field name="remove_flexi" type="list" default="1" label="Remove FLEXIcontent" description="Remove FLEXIcontent Plugins">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
@@ -73,12 +73,6 @@
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
-            </fieldset>
-            <fieldset name="deprecated">
-                <field type="krdonationcodecheck" />
-                <field name="krtitle-deprecated" type="krtitle" label="PLG_JSCSSCONTROL_DEPRECATED_FIELDS" />
-                <field name="js" type="textarea" default="" rows="8" cols="80" label="PLG_JSCSSCONTROL_JS" description="PLG_JSCSSCONTROL_JSDESC" />
-                <field name="css" type="textarea" default="" rows="8" cols="80" label="PLG_JSCSSCONTROL_CSS" description="PLG_JSCSSCONTROL_CSSDESC" />
             </fieldset>
             <fieldset name="donation">
                 <field type="krdonationcodecheck" name="donation" />
