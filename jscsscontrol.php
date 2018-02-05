@@ -77,6 +77,15 @@ class PlgSystemJsCssControl extends JPlugin
 			{
 				$this->exclude_js_files[] = 'components/com_flexicontent/assets/js/tmpl-common.js';
 				$this->exclude_js_files[] = 'components/com_flexicontent/assets/js/jquery-easing.js';
+				$this->exclude_js_files[] = 'components/com_flexicontent/assets/js/flexi-lib.js';
+			//EXCLUDE ALL JOOMLA BULLSHIT	
+				$this->exclude_js_files[] = 'media/system/js/core.js';
+				$this->exclude_js_files[] = 'media/jui/js/jquery.min.js';
+				$this->exclude_js_files[] = 'media/jui/js/jquery-noconflict.js';
+				$this->exclude_js_files[] = 'media/jui/js/jquery-migrate.min.js';
+				$this->exclude_js_files[] = 'media/jui/js/bootstrap.min.js';
+				$this->exclude_js_files[] = 'media/jui/js/chosen.jquery.min.js';
+						
 			}
 			
 			if(!empty($this->exclude_js_files))
